@@ -463,6 +463,9 @@ namespace KlayGE
 
 		this->FlushScene();
 
+		FrameBuffer& fb = *re.ScreenFrameBuffer();
+		fb.SwapBuffers();
+
 		if (!update_thread_ && !quit_)
 		{
 			update_thread_ = MakeUniquePtr<joiner<void>>(Context::Instance().ThreadPool()(
@@ -522,6 +525,8 @@ namespace KlayGE
 		}
 
 		re.EndFrame();
+
+		fb.WaitOnSwapBuffers();
 	}
 
 	// 把渲染队列中的物体渲染出来
